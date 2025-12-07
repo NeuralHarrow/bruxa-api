@@ -1,48 +1,52 @@
 const cloudinary = require("cloudinary").v2;
 
-module.exports = {
-  meta: {
-    name: "Cloudinary Uploader",
-    version: "1.0.0",
-    description: "Upload videos/images to Cloudinary",
-    author: "Rakib Adil",
-    method: "post",
-    path: "/cloud?url=",
-    category: "uploader"
-  },
+// Configure Cloudinary
+cloudinary.config({
+  cloud_name: "dq9pwrrhy",
+  api_key: "596214271551612",
+  api_secret: "a0TTwqmT_MCn85dAhdW7R2yyet8"
+});
 
-  onStart: async function({ req, res }) {
-    const url = req.query.url;
-    if (!url) {
-      return res.status(400).json({ error: "URL is required" });
-    }
+const meta = {
+  name: "cloudinary-uploader",
+  version: "1.0.0",
+  description: "Upload videos or images to Cloudinary and get a secure URL",
+  author: "Rakib Adil",
+  method: "post",
+  category: "uploader",
+  path: "/cloud?url=" // API expects URL as query parameter
+};
 
-    // Cloudinary Config (safe here)
-    cloudinary.config({
-      cloud_name: "dq9pwrrhy",
-      api_key: "596214271551612",
-      api_secret: "a0TTwqmT_MCn85dAhdW7R2yyet8"
+async function onStart({ req, res }) {
+  const { url } = req.query;
+
+  if (!url) {
+    return res.status(400).json({
+      status: false,
+      error: "URL parameter is required"
+    });
+  }
+
+  try {
+    const result = await cloudinary.uploader.upload(url, {
+      resource_type: "auto" // Supports image and video
     });
 
-    try {
-      const result = await cloudinary.uploader.upload(url, {
-        resource_type: "auto"
-      });
-
-      return res.json({
-        status: true,
-        url: result.secure_url,
-        format: result.format,
-        author: "Rakib Adil",
-        message: "Upload successful"
-      });
-
-    } catch (error) {
-      return res.status(500).json({
-        status: false,
-        error: "Cloudinary upload failed",
-        details: error.message
-      });
-    }
+    return res.status(200).json({
+      status: true,
+      url: result.secure_url,
+      format: result.format,
+      message: "Upload successful",
+      author: "Rakib Adil"
+    });
+  } catch (error) {
+    console.error("Cloudinary upload error:", error);
+    return res.status(500).json({
+      status: false,
+      message: "Upload failed",
+      error: error.message
+    });
   }
-};
+}
+
+module.exports = { meta, onStart };
