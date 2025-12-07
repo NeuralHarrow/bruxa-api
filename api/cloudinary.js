@@ -1,6 +1,5 @@
 const cloudinary = require("cloudinary").v2;
 
-// Configure Cloudinary
 cloudinary.config({
   cloud_name: "dq9pwrrhy",
   api_key: "596214271551612",
@@ -14,23 +13,18 @@ const meta = {
   author: "Rakib Adil",
   method: "post",
   category: "uploader",
-  path: "/cloud?url=" // API expects URL as query parameter
+  path: "/cloud?url="
 };
 
 async function onStart({ req, res }) {
   const { url } = req.query;
 
   if (!url) {
-    return res.status(400).json({
-      status: false,
-      error: "URL parameter is required"
-    });
+    return res.status(400).json({ status: false, error: "URL parameter is required" });
   }
 
   try {
-    const result = await cloudinary.uploader.upload(url, {
-      resource_type: "auto" // Supports image and video
-    });
+    const result = await cloudinary.uploader.upload(url, { resource_type: "auto" });
 
     return res.status(200).json({
       status: true,
@@ -41,12 +35,14 @@ async function onStart({ req, res }) {
     });
   } catch (error) {
     console.error("Cloudinary upload error:", error);
-    return res.status(500).json({
-      status: false,
-      message: "Upload failed",
-      error: error.message
-    });
+    return res.status(500).json({ status: false, message: "Upload failed", error: error.message });
   }
 }
 
+// This is the Vercel wrapper
+export default async function handler(req, res) {
+  await onStart({ req, res });
+}
+
+// optional export for loader
 module.exports = { meta, onStart };
