@@ -13,7 +13,7 @@ module.exports = {
     description: "Upload a video/image to Cloudinary from a URL",
     author: "Rakib Adil",
     category: "cloudinary",
-    path: "/cloud/upload?url=",    // POST /api/cloud/upload?url=<link>
+    path: "/cloudinary?url=",    // POST /api/cloud/upload?url=<link>
     method: "post"
   },
 
