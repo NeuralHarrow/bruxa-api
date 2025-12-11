@@ -9,7 +9,7 @@ cloudinary.config({
 
 module.exports = {
   meta: {
-    name: "cloud-upload",
+    name: "cloudinary",
     description: "Upload a video/image to Cloudinary from a URL",
     author: "Rakib Adil",
     category: "cloudinary",
