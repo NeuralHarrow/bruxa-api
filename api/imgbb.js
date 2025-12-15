@@ -7,14 +7,14 @@ const PORT = process.env.PORT || 3000;
 const IMGBB_API_KEY = '9c8c59b5c6e0c5e814c1bf70dcd8935b';
 
 module.exports = {
-  const meta : {
+   meta : {
     name: "imgbb",
     version: "1.0.0",
     description: "Upload images to imgbb and get a url",
     author: "Rakib Adil",
     method: "get",
     category: "imgtourl",
-    path: "/upload?url=
+    path: "/upload?url="
   },
 
   onStart: async function ({ req, res }) {
