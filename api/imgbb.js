@@ -1,8 +1,7 @@
-const express = require('express');
+
 const axios = require('axios');
 const FormData = require('form-data');
 
-const app = express();
 const PORT = process.env.PORT || 3000;
 const IMGBB_API_KEY = '9c8c59b5c6e0c5e814c1bf70dcd8935b';
 
@@ -13,7 +12,7 @@ module.exports = {
     description: "Upload images to imgbb and get a url",
     author: "Rakib Adil",
     method: "get",
-    category: "imgtourl",
+    category: "Imgbb",
     path: "/upload?url="
   },
 
@@ -63,3 +62,4 @@ module.exports = {
     });
   };
 }
+};
